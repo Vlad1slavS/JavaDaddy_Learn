@@ -1,7 +1,7 @@
 package io.github.vladislav.Multithreading;
 
 
-public class ProducerConsumerDemo<K, V> {
+public class ProducerConsumerDemo {
     public static void main(String[] args) {
 
     }

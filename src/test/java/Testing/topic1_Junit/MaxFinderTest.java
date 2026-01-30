@@ -4,7 +4,7 @@ import io.github.vladislav.Testing.topic1_Junit.MaxFinder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MaxFinderTest {
 
@@ -51,7 +51,7 @@ public class MaxFinderTest {
     @Test
     public void findMax_emptyArray_throwsException() {
         int[] numbers = {};
-        assertEquals(null, MaxFinder.findMax(numbers).isPresent() ?
+        assertNull(MaxFinder.findMax(numbers).isPresent() ?
                 MaxFinder.findMax(numbers).getAsInt() :
                 null);
     }
@@ -59,7 +59,7 @@ public class MaxFinderTest {
     @Test
     public void findMax_nullArray_throwsException() {
         int[] numbers = null;
-        assertEquals(null, MaxFinder.findMax(numbers).isPresent() ?
+        assertNull(MaxFinder.findMax(numbers).isPresent() ?
                 MaxFinder.findMax(numbers).getAsInt() :
                 null);
     }

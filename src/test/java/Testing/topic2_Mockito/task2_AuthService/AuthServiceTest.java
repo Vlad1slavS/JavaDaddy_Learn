@@ -30,7 +30,6 @@ public class AuthServiceTest {
 
     private final String username = "testUser";
     private final String password = "testPass";
-    private final String incorrectPassword = "incorrectPass";
 
 
     private final User user = new User("testUser", "testPass");
@@ -47,6 +46,7 @@ public class AuthServiceTest {
     @Test
     void authenticateUser_incorrectPass_failedAuth() {
         when(userRepository.findUserByUsername(username)).thenReturn(user);
+        String incorrectPassword = "incorrectPass";
         boolean authenticate = authService.authenticateUser(username, incorrectPassword);
         assertFalse(authenticate);
         verify(userRepository).findUserByUsername(username);

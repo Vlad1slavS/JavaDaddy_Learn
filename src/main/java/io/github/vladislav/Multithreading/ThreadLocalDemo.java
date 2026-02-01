@@ -22,12 +22,16 @@ public class ThreadLocalDemo {
 
         IntStream.range(0, 10).forEach(i -> {
             Thread thread = new Thread(() -> {
-                Integer counter = threadLocalValue.get();
-                for (int j = 0; j < 1000; j++) {
-                    counter++;
-                    threadLocalValue.set(counter);
+                try {
+                    Integer counter = threadLocalValue.get();
+                    for (int j = 0; j < 1000; j++) {
+                        counter++;
+                        threadLocalValue.set(counter);
+                    }
+                    results.put(Thread.currentThread().getName(), counter);
+                } finally {
+                    threadLocalValue.remove();
                 }
-                results.put(Thread.currentThread().getName(), counter);
             });
             threads.add(thread);
             thread.start();

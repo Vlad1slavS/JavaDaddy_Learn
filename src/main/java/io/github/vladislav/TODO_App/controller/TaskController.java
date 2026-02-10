@@ -24,10 +24,6 @@ public class TaskController {
         return taskService.getAllTasks();
     }
 
-    public Task getTaskById(UUID id) throws NoSuchElementException {
-        return taskService.getTaskById(id);
-    }
-
     public Task createTask(String title, String description, String deadline) throws IllegalArgumentException {
         return taskService.createTask(title, description, deadline);
     }
@@ -44,14 +40,16 @@ public class TaskController {
         return taskService.getTasksWithStatusFilter(status);
     }
 
-    public Task updateTask(Task task, String newTitle, String newDescription, String newDeadline) throws IllegalArgumentException {
-        return taskService.updateTask(task, newTitle, newDescription, newDeadline);
+    public Task updateTask(UUID id, String newTitle, String newDescription, String newDeadline) throws IllegalArgumentException, NoSuchElementException {
+        return taskService.updateTask(id, newTitle, newDescription, newDeadline);
     }
 
     public List<Task> getSortedTasks(SortingOptions sortBy) {
         return taskService.getSortedTasks(sortBy);
     }
 
-
+    public boolean existsTaskById(UUID id) {
+        return taskService.existsById(id);
+    }
 
 }

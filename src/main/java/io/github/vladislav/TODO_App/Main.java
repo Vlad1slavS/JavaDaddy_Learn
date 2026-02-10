@@ -3,7 +3,7 @@ package io.github.vladislav.TODO_App;
 import io.github.vladislav.TODO_App.controller.TaskController;
 import io.github.vladislav.TODO_App.model.enums.SortingOptions;
 import io.github.vladislav.TODO_App.model.enums.TaskStatus;
-import io.github.vladislav.TODO_App.model.Task;
+import io.github.vladislav.TODO_App.repository.ITaskRepository;
 import io.github.vladislav.TODO_App.repository.Impl.InMemoryTaskRepository;
 import io.github.vladislav.TODO_App.service.TaskService;
 
@@ -14,7 +14,7 @@ import java.util.UUID;
 public class Main {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private static final InMemoryTaskRepository taskRepository = new InMemoryTaskRepository();
+    private static final ITaskRepository taskRepository = new InMemoryTaskRepository();
     private static final TaskService taskService = new TaskService(taskRepository);
     private static final TaskController taskController = new TaskController(taskService);
 
@@ -68,7 +68,6 @@ public class Main {
                 case 3:
                     System.out.println("Введите id задачи для обновления:");
                     UUID updateId;
-                    Task taskToUpdate;
 
                     try {
                         updateId = UUID.fromString(SCANNER.nextLine().trim());
@@ -77,9 +76,12 @@ public class Main {
                         break;
                     }
 
-                    try {
-                        taskToUpdate = taskController.getTaskById(updateId);
+                    if (!taskController.existsTaskById(updateId)) {
+                        System.out.println("Задача с таким id не найдена.");
+                        break;
+                    }
 
+                    try {
                         System.out.println("Введите новое название задачи:");
                         String newTitle = SCANNER.nextLine().trim();
 
@@ -89,7 +91,7 @@ public class Main {
                         System.out.println("Введите новый дедлайн задачи (формат: гггг-мм-дд, например 2026-02-15):");
                         String newDateInput = SCANNER.nextLine().trim();
 
-                        System.out.println(taskController.updateTask(taskToUpdate, newTitle, newDescription, newDateInput));
+                        System.out.println(taskController.updateTask(updateId, newTitle, newDescription, newDateInput));
 
                     } catch (IllegalArgumentException | NoSuchElementException ex) {
                         System.out.println(ex.getMessage());

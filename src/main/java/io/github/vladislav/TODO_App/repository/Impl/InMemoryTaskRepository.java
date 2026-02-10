@@ -40,4 +40,8 @@ public class InMemoryTaskRepository implements ITaskRepository {
         taskMap.clear();
     }
 
+    public boolean existsById(UUID id) {
+        return taskMap.containsKey(id);
+    }
+
 }

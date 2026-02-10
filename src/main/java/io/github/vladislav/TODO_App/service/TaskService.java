@@ -3,7 +3,7 @@ package io.github.vladislav.TODO_App.service;
 import io.github.vladislav.TODO_App.model.enums.SortingOptions;
 import io.github.vladislav.TODO_App.model.enums.TaskStatus;
 import io.github.vladislav.TODO_App.model.Task;
-import io.github.vladislav.TODO_App.repository.Impl.InMemoryTaskRepository;
+import io.github.vladislav.TODO_App.repository.ITaskRepository;
 import io.github.vladislav.TODO_App.validator.TaskValidator;
 
 import java.time.LocalDate;
@@ -18,9 +18,9 @@ import java.util.UUID;
  */
 public class TaskService {
 
-    private final InMemoryTaskRepository taskRepository;
+    private final ITaskRepository taskRepository;
 
-    public TaskService(InMemoryTaskRepository taskRepository) {
+    public TaskService(ITaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
@@ -56,7 +56,9 @@ public class TaskService {
         return taskRepository.saveOrUpdateTask(updatedTask);
     }
 
-    public Task updateTask(Task taskToUpdate, String newTitle, String newDescription, String newDeadline) {
+    public Task updateTask(UUID id, String newTitle, String newDescription, String newDeadline) throws IllegalArgumentException, NoSuchElementException {
+
+        Task taskToUpdate = getTaskById(id);
 
         TaskValidator.validateDate(newDeadline);
         LocalDate date = LocalDate.parse(newDeadline);
@@ -93,7 +95,8 @@ public class TaskService {
         };
     }
 
-
-
+    public boolean existsById(UUID id) {
+        return taskRepository.existsById(id);
+    }
 
 }

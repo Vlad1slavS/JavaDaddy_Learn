@@ -21,4 +21,6 @@ public interface ITaskRepository {
 
     void clearRepository();
 
+    boolean existsById(UUID id);
+
 }

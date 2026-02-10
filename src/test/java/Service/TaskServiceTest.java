@@ -134,6 +134,8 @@ public class TaskServiceTest {
 
     @Test
     public void updateTask_invalidDate_exceptionThrown() {
+
+        UUID taskId = UUID.randomUUID();
         Task existingTask = Task.builder()
                 .title("Existing Task")
                 .description("This is an existing task")
@@ -141,14 +143,17 @@ public class TaskServiceTest {
                 .status(null)
                 .build();
 
+        when(inMemoryTaskRepository.getTaskById(any())).thenReturn(Optional.of(existingTask));
+
         assertThrows(IllegalArgumentException.class, () -> {
-            taskService.updateTask(existingTask, "Updated Task", "Updated description", "2023-01-01");
+            taskService.updateTask(taskId, "Updated Task", "Updated description", "2023-01-01");
         });
         verify(inMemoryTaskRepository, never()).saveOrUpdateTask(any());
     }
 
     @Test
     public void updateTask_emptyTitle_exceptionThrown() {
+        UUID taskId = UUID.randomUUID();
         Task existingTask = Task.builder()
                 .title("Existing Task")
                 .description("This is an existing task")
@@ -156,8 +161,10 @@ public class TaskServiceTest {
                 .status(null)
                 .build();
 
+        when(inMemoryTaskRepository.getTaskById(any())).thenReturn(Optional.of(existingTask));
+
         assertThrows(IllegalArgumentException.class, () -> {
-            taskService.updateTask(existingTask, "", "Updated description", "2026-12-31");
+            taskService.updateTask(taskId, "", "Updated description", "2026-12-31");
         });
         verify(inMemoryTaskRepository, never()).saveOrUpdateTask(any());
     }
@@ -165,6 +172,9 @@ public class TaskServiceTest {
     @Test
     public void updateTask_longDescription_exceptionThrown() {
         String description = "long".repeat(126);
+
+        UUID taskId = UUID.randomUUID();
+
         Task existingTask = Task.builder()
                 .title("Existing Task")
                 .description("This is an existing task")
@@ -172,8 +182,10 @@ public class TaskServiceTest {
                 .status(null)
                 .build();
 
+        when(inMemoryTaskRepository.getTaskById(any())).thenReturn(Optional.of(existingTask));
+
         assertThrows(IllegalArgumentException.class, () -> {
-            taskService.updateTask(existingTask, "Updated Task", description, "2026-12-31");
+            taskService.updateTask(taskId, "Updated Task", description, "2026-12-31");
         });
         verify(inMemoryTaskRepository, never()).saveOrUpdateTask(any());
     }
